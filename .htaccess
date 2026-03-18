@@ -14,10 +14,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} (.+)/$
 RewriteRule ^ %1 [L,R=301]
 
-# Si le fichier existe dans /public, le servir directement
+# Servir les assets statiques de /public/build directement
 RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
 RewriteRule ^(.*)$ public/$1 [L]
 
-# Sinon, tout envoyer vers public/index.php
-RewriteCond %{REQUEST_URI} !^/public
+# Servir les dossiers statiques (build, images, css, js...)
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -d
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Tout le reste → Laravel front controller
 RewriteRule ^(.*)$ public/index.php [L]
