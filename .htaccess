@@ -9,8 +9,12 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# Rediriger /build/ vers /public/build/
+# Rediriger tous les assets vers /public/
 RewriteRule ^build/(.*)$ public/build/$1 [L]
+RewriteRule ^images/(.*)$ public/images/$1 [L]
+RewriteRule ^css/(.*)$ public/css/$1 [L]
+RewriteRule ^js/(.*)$ public/js/$1 [L]
+RewriteRule ^fonts/(.*)$ public/fonts/$1 [L]
 
 # Servir les fichiers statiques de /public directement
 RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
