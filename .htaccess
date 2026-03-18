@@ -14,11 +14,10 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} (.+)/$
 RewriteRule ^ %1 [L,R=301]
 
-# Rediriger vers public/ si pas déjà dedans
-RewriteCond %{REQUEST_URI} !^/public
+# Si le fichier existe dans /public, le servir directement
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
 RewriteRule ^(.*)$ public/$1 [L]
 
-# Front controller Laravel
-RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} !-d
-RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} !-f
-RewriteRule ^public/(.*)$ public/index.php [L]
+# Sinon, tout envoyer vers public/index.php
+RewriteCond %{REQUEST_URI} !^/public
+RewriteRule ^(.*)$ public/index.php [L]
