@@ -79,15 +79,15 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden lg:flex items-center">
-                        <a href="{{ route('home') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('home') ? 'bg-sky-500' : '' }}">Accueil</a>
-                        <a href="{{ route('services') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('services') ? 'bg-sky-500' : '' }}">Services</a>
-                        <a href="{{ route('abonnement.index') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('abonnement.index') ? 'bg-sky-500' : '' }}">Forfaits</a>
-                        <a href="{{ route('about') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('about') ? 'bg-sky-500' : '' }}">À Propos</a>
-                        <a href="{{ route('suivi-commande.form') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('suivi-commande.form') ? 'bg-sky-500' : '' }}">Suivi Commande</a>
+                        <a href="{{ route('home') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-4 xl:px-6 text-nowrap {{ request()->routeIs('home') ? 'border-b-3 border-sky-500' : '' }}">Accueil</a>
+                        <a href="{{ route('services') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-4 xl:px-6 text-nowrap {{ request()->routeIs('services') ? 'border-b-3 border-sky-500' : '' }}">Services</a>
+                        <a href="{{ route('abonnement.index') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-4 xl:px-6 text-nowrap {{ request()->routeIs('abonnement.index') ? 'border-b-3 border-sky-500' : '' }}">Forfaits</a>
+                        <a href="{{ route('about') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-4 xl:px-6 text-nowrap {{ request()->routeIs('about') ? 'border-b-3 border-sky-500' : '' }}">À Propos</a>
+                        <a href="{{ route('suivi-commande.form') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-4 xl:px-6 text-nowrap {{ request()->routeIs('suivi-commande.form') ? 'border-b-3 border-sky-500' : '' }}">Suivi Commande</a>
                         @auth
-                            <a href="{{ route('abonnement.actuel') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('abonnement.actuel') ? 'bg-sky-500' : '' }}">Mon Abonnement</a>
+                            <a href="{{ route('abonnement.actuel') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-4 lg:px-6 text-nowrap {{ request()->routeIs('abonnement.actuel') ? 'bg-sky-500' : '' }}">Mon Abonnement</a>
                         @endauth
-                        <a href="{{ route('commander') }}" class="bg-sky-500 hover:bg-sky-600 text-white transition-colors font-semibold py-3 px-6 mx-4 rounded-lg flex items-center">
+                        <a href="{{ route('commander') }}" class="bg-sky-500 hover:bg-sky-600 text-white transition-colors font-semibold py-3 px-4 md:px-6 mx-4 rounded-lg flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
@@ -176,10 +176,10 @@
             <!-- Mobile Menu -->
             <div x-show="open" x-transition class="lg:hidden pb-4">
                 <div class="flex flex-col space-y-2">
-                    <a href="{{ route('home') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('home') ? 'bg-sky-500' : '' }}">Accueil</a>
-                    <a href="{{ route('services') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('services') ? 'bg-sky-500' : '' }}">Services</a>
-                    <a href="{{ route('abonnement.index') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('abonnement.index') ? 'bg-sky-500' : '' }}">Forfaits</a>
-                    <a href="{{ route('about') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('about') ? 'bg-sky-500' : '' }}">À Propos</a>
+                    <a href="{{ route('home') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('home') ? 'border-b-2 border-sky-500' : '' }}">Accueil</a>
+                    <a href="{{ route('services') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('services') ? 'border-b-2 border-sky-500' : '' }}">Services</a>
+                    <a href="{{ route('abonnement.index') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('abonnement.index') ? 'border-b-2 border-sky-500' : '' }}">Forfaits</a>
+                    <a href="{{ route('about') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('about') ? 'border-b-2 border-sky-500' : '' }}">À Propos</a>
                     <a href="{{ route('commander') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-5 mx-3 rounded-lg text-center flex items-center justify-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
