@@ -38,7 +38,7 @@
     </div>
 
     {{-- WhatsApp Floating Bubble --}}
-    <x-whatsapp-bubble phone="+22997000000" message="Bonjour, je souhaite avoir des informations sur vos services de pressing." />
+    <x-whatsapp-bubble phone="+2290141122828" message="Bonjour, je souhaite avoir des informations sur vos services de pressing." />
 
     <!-- KKiaPay SDK -->
     <script src="https://cdn.kkiapay.me/k.js"></script>

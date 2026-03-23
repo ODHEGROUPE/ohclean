@@ -256,8 +256,7 @@
                         </div>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900">Téléphone</h3>
-                            <p class="text-gray-600">+229 97 00 00 00</p>
-                            <p class="text-gray-600">+229 96 00 00 00</p>
+                            <p class="text-gray-600">+229 01 41 12 28 28</p>
                         </div>
                     </div>
 
@@ -270,8 +269,7 @@
                         </div>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900">Email</h3>
-                            <p class="text-gray-600">contact@pressing.bj</p>
-                            <p class="text-gray-600">info@pressing.bj</p>
+                            <p class="text-gray-600">ohclean@odhe.net</p>
                         </div>
                     </div>
                 </div>
@@ -300,11 +298,6 @@
         <div class="text-center md:text-left">
             <h3 class="text-3xl md:text-4xl font-bold text-white">Zone de Livraison</h3>
             <p class="mt-2 text-sky-100">Nous livrons dans tout Cotonou et ses environs</p>
-            <div class="mt-4 flex flex-wrap justify-center gap-2 md:justify-start">
-                <span class="rounded-full bg-white px-3 py-1 text-sm font-medium text-sky-600 shadow-sm">Cotonou</span>
-                <span class="rounded-full bg-white px-3 py-1 text-sm font-medium text-sky-600 shadow-sm">Abomey-Calavi</span>
-
-            </div>
         </div>
         <div class="flex-shrink-0">
             <a href="{{ route('commander') }}"

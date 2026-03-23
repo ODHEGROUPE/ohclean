@@ -45,9 +45,26 @@
             <form action="{{ route('client.commander.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="is_express" value="{{ $isExpress ? '1' : '0' }}">
+
                 <div class="grid gap-8 lg:grid-cols-3">
                     <!-- Article Selection -->
                     <div class="space-y-6 lg:col-span-2">
+                        <div>
+                            @if($isExpress)
+                                <a href="{{ route('commander') }}"
+                                    class="flex w-full items-center justify-center rounded-xl bg-orange-500 py-4 font-semibold text-white transition-colors hover:bg-orange-600">
+                                    <i class="fa-solid fa-truck-fast mr-3"></i>
+                                    Mode Express activé (cliquez pour désactiver)
+                                </a>
+                            @else
+                                <a href="{{ route('commander') }}?express=1"
+                                    class="flex w-full items-center justify-center rounded-xl bg-sky-600 py-4 font-semibold text-white transition-colors hover:bg-sky-700">
+                                    <i class="fa-solid fa-truck-fast mr-3"></i>
+                                    Expresser la commande
+                                </a>
+                            @endif
+                        </div>
+
                         <!-- Sélection du service -->
                         <div class="rounded-2xl bg-white p-6 shadow-sm">
                             <h2 class="mb-4 flex items-center text-xl font-bold text-gray-900">
@@ -144,7 +161,7 @@
                                     <input type="tel" name="telephone"
                                         value="{{ old('telephone', auth()->user()->telephone ?? '') }}"
                                         class="w-full rounded-lg border @error('telephone') border-red-500 @else border-gray-300 @enderror px-4 py-3 focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
-                                        placeholder="+229 97 00 00 00">
+                                        placeholder="+229 01 41 12 28 28">
                                     @error('telephone')
                                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                     @enderror
@@ -184,21 +201,6 @@
                                     @enderror
                                 </div>
 
-                                <div class="md:col-span-2">
-                                    @if($isExpress)
-                                        <a href="{{ route('commander') }}"
-                                            class="my-6 flex w-full items-center justify-center rounded-xl bg-orange-500 py-4 font-semibold text-white transition-colors hover:bg-orange-600">
-                                            <i class="fa-solid fa-truck-fast mr-3"></i>
-                                            Mode Express activé (cliquez pour désactiver)
-                                        </a>
-                                    @else
-                                        <a href="{{ route('commander') }}?express=1"
-                                            class="my-6 flex w-full items-center justify-center rounded-xl bg-sky-600 py-4 font-semibold text-white transition-colors hover:bg-sky-700">
-                                            <i class="fa-solid fa-truck-fast mr-3"></i>
-                                            Expresser la commande
-                                        </a>
-                                    @endif
-                                </div>
                                 <div>
                                     <label class="mb-2 block text-sm font-medium text-gray-700">Date de livraison *</label>
                                     <input type="date" name="date_livraison" value="{{ old('date_livraison') }}"

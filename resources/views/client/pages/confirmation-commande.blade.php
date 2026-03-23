@@ -15,6 +15,12 @@
                 </div>
             @endif
 
+            @if(session('error'))
+                <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="bg-white rounded-2xl shadow-sm p-8">
                 <!-- Numéro de suivi -->
                 <div class="text-center mb-8 pb-8 border-b border-gray-200">
@@ -91,13 +97,15 @@
 
                 <!-- Actions -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('suivi-commande.form') }}?numero_commande={{ $commande->numSuivi }}"
-                       class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        Suivre ma commande
-                    </a>
+                    @if($commande->paiement)
+                        <a href="{{ route('client.commandes.confirmation.recu.pdf', $commande) }}"
+                           class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M7 20h10a2 2 0 002-2V6a2 2 0 00-2-2h-3.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 0010.586 2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                            Télécharger le reçu PDF
+                        </a>
+                    @endif
 
                     <a href="{{ route('commander') }}"
                        class="border border-sky-600 text-sky-600 hover:bg-sky-50 font-semibold px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-2">

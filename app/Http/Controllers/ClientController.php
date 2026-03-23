@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Article;
 use App\Models\Commande;
+use App\Models\User;
+use App\Models\Notification;
 use App\Models\LigneCommande;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -208,6 +211,29 @@ class ClientController extends Controller
                         'moyenPaiement' => 'MOBILE_MONEY',
                         'transaction_id' => $transactionId,
                     ]);
+
+                    // Notifier le client
+                    if ($commande->user_id) {
+                        Notification::create([
+                            'user_id' => $commande->user_id,
+                            'commande_id' => $commande->id,
+                            'message' => 'Paiement confirmé pour la commande ' . $commande->numSuivi . '.',
+                            'type' => 'success',
+                            'dateEnvoi' => now()->toDateString(),
+                        ]);
+                    }
+
+                    // Notifier les administrateurs/agents
+                    $staffIds = User::whereIn('role', ['ADMIN', 'AGENT_PRESSING'])->pluck('id');
+                    foreach ($staffIds as $staffId) {
+                        Notification::create([
+                            'user_id' => $staffId,
+                            'commande_id' => $commande->id,
+                            'message' => 'Paiement reçu pour la commande ' . $commande->numSuivi . ' (' . number_format($donneesCommande['montant'], 0, ',', ' ') . ' XOF).',
+                            'type' => 'success',
+                            'dateEnvoi' => now()->toDateString(),
+                        ]);
+                    }
                 }
 
                 DB::commit();
@@ -261,6 +287,31 @@ class ClientController extends Controller
                     'datePaiement' => now()->toDateString(),
                     'moyenPaiement' => 'MOBILE_MONEY',
                     'transaction_id' => $transactionId,
+                ]);
+            }
+
+            // Notifier les administrateurs/agents de la nouvelle commande
+            $staffIds = User::whereIn('role', ['ADMIN', 'AGENT_PRESSING'])->pluck('id');
+            foreach ($staffIds as $staffId) {
+                Notification::create([
+                    'user_id' => $staffId,
+                    'commande_id' => $commande->id,
+                    'message' => 'Nouvelle commande ' . $commande->numSuivi . ' créée' . ($transactionId ? ' et payée.' : '.'),
+                    'type' => $transactionId ? 'success' : 'info',
+                    'dateEnvoi' => now()->toDateString(),
+                ]);
+            }
+
+            // Notifier le client
+            if ($commande->user_id) {
+                Notification::create([
+                    'user_id' => $commande->user_id,
+                    'commande_id' => $commande->id,
+                    'message' => $transactionId
+                        ? 'Commande ' . $commande->numSuivi . ' créée et paiement confirmé.'
+                        : 'Commande ' . $commande->numSuivi . ' créée avec succès.',
+                    'type' => 'success',
+                    'dateEnvoi' => now()->toDateString(),
                 ]);
             }
 
@@ -321,9 +372,27 @@ class ClientController extends Controller
      */
     public function confirmationCommande(Commande $commande)
     {
-        $commande->load(['ligneCommandes.article']);
+        $commande->load(['ligneCommandes.article', 'paiement', 'user']);
 
         return view('client.pages.confirmation-commande', compact('commande'));
+    }
+
+    /**
+     * Télécharger le reçu de paiement PDF depuis la page de confirmation
+     */
+    public function telechargerRecuPaiementPublic(Commande $commande)
+    {
+        $commande->load(['user', 'ligneCommandes.article', 'paiement']);
+
+        if (!$commande->paiement) {
+            return redirect()
+                ->route('client.commandes.confirmation', $commande)
+                ->with('error', 'Le reçu est disponible uniquement après paiement.');
+        }
+
+        $pdf = Pdf::loadView('client.pages.recu-paiement-pdf', compact('commande'));
+
+        return $pdf->download('recu-paiement-' . $commande->numSuivi . '.pdf');
     }
 
     /**
@@ -417,6 +486,30 @@ class ClientController extends Controller
         ]]);
 
         return redirect()->route('client.paiement');
+    }
+
+    /**
+     * Télécharger le reçu de paiement d'une commande en PDF
+     */
+    public function telechargerRecuPaiement(Commande $commande)
+    {
+        // Vérifier que la commande appartient bien au client connecté
+        if ($commande->user_id !== auth()->id()) {
+            abort(403, 'Accès non autorisé');
+        }
+
+        $commande->load(['user', 'ligneCommandes.article', 'paiement']);
+
+        // Le reçu PDF n'est disponible que si la commande est payée
+        if (!$commande->paiement) {
+            return redirect()
+                ->route('client.commandes.show', $commande)
+                ->with('error', 'Aucun paiement trouvé pour cette commande.');
+        }
+
+        $pdf = Pdf::loadView('client.pages.recu-paiement-pdf', compact('commande'));
+
+        return $pdf->download('recu-paiement-' . $commande->numSuivi . '.pdf');
     }
 
     /**

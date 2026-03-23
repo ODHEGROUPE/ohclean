@@ -167,6 +167,14 @@
                                     <span class="font-medium">Paiement effectué</span>
                                 </div>
                                 <p class="text-sm text-green-600 mt-1">{{ \Carbon\Carbon::parse($commande->paiement->datePaiement)->format('d/m/Y H:i') }}</p>
+
+                                <a href="{{ route('client.commandes.recu.pdf', $commande) }}"
+                                   class="mt-3 inline-flex items-center px-3 py-2 rounded-lg bg-white border border-green-200 text-green-700 text-sm font-medium hover:bg-green-100 transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M7 20h10a2 2 0 002-2V6a2 2 0 00-2-2h-3.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 0010.586 2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Télécharger le reçu PDF
+                                </a>
                             </div>
                         @else(isset($hasAbonnement) && $hasAbonnement)
                             <div class="mt-4 p-4 bg-sky-50 rounded-lg">

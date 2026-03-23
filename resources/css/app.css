@@ -251,8 +251,8 @@ layer(base);
   }
 
   .menu-item-active {
-    background-color: var(--color-brand-50);
-    color: var(--color-brand-500);
+    background-color: #ecfeff;
+    color: #0891b2;
   }
 
   .menu-item-inactive {
@@ -260,11 +260,11 @@ layer(base);
   }
   .menu-item-inactive:hover {
     background-color: var(--color-gray-100);
-    color: var(--color-gray-700);
+    color: #0e7490;
   }
 
   .menu-item-icon-active {
-    fill: var(--color-brand-500);
+    fill: #0891b2;
   }
 
   .menu-item-icon-inactive {
@@ -282,7 +282,7 @@ layer(base);
   }
 
   .menu-item-arrow-active {
-    stroke: var(--color-brand-500);
+    stroke: #0891b2;
     transform: rotate(180deg);
   }
 
@@ -305,8 +305,8 @@ layer(base);
   }
 
   .menu-dropdown-item-active {
-    background-color: var(--color-brand-50);
-    color: var(--color-brand-500);
+    background-color: #ecfeff;
+    color: #0891b2;
   }
 
   .menu-dropdown-item-inactive {
@@ -323,18 +323,18 @@ layer(base);
     font-size: 0.75rem;
     font-weight: 500;
     text-transform: uppercase;
-    color: var(--color-brand-500);
+    color: #0891b2;
   }
 
   .menu-dropdown-badge-active {
-    background-color: var(--color-brand-100);
+    background-color: #cffafe;
   }
 
   .menu-dropdown-badge-inactive {
-    background-color: var(--color-brand-50);
+    background-color: #ecfeff;
   }
   .group:hover .menu-dropdown-badge-inactive {
-    background-color: var(--color-brand-100);
+    background-color: #cffafe;
   }
 
   .no-scrollbar {

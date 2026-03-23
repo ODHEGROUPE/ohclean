@@ -92,6 +92,13 @@
                                         </svg>
                                         Payer
                                     </a>
+                                @elseif($commande->paiement)
+                                    <a href="{{ route('client.commandes.recu.pdf', $commande) }}" class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-medium text-sm px-4 py-2 rounded-lg transition-colors">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M7 20h10a2 2 0 002-2V6a2 2 0 00-2-2h-3.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 0010.586 2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                        Reçu PDF
+                                    </a>
                                 @endif
                                 <a href="{{ route('client.commandes.show', $commande) }}" class="inline-flex items-center text-sky-600 hover:text-sky-700 font-medium text-sm">
                                     Voir les détails

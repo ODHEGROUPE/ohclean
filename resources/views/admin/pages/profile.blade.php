@@ -83,7 +83,7 @@
 
                         <div>
                             <x-input-label for="telephone" :value="__('Téléphone')" />
-                            <x-text-input id="telephone" name="telephone" type="tel" class="mt-1 block w-full" :value="old('telephone', $user->telephone)" placeholder="+229 97 00 00 00" />
+                            <x-text-input id="telephone" name="telephone" type="tel" class="mt-1 block w-full" :value="old('telephone', $user->telephone)" placeholder="+229 01 41 12 28 28" />
                             <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
                         </div>
 

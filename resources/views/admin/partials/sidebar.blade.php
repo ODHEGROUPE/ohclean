@@ -7,10 +7,10 @@
         class="sidebar-header flex items-center gap-2 pb-7 pt-8">
         <a href="{{ route('home') }}">
             <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-                <img class="" src="{{ asset('images/logo/logo.svg') }}" alt="Logo" />
+                <img class="" src="{{ asset('images/logo/clean.png') }}" alt="Logo" />
             </span>
 
-            <img class="logo-icon" :class="sidebarToggle ? 'lg:block' : 'hidden'" src="{{ asset('images/logo/logo-icon.svg') }}"
+            <img class="logo-icon" :class="sidebarToggle ? 'lg:block' : 'hidden'" src="{{ asset('images/logo/clean.png') }}"
                 alt="Logo" />
         </a>
     </div>
@@ -36,7 +36,7 @@
 
                             <i class="fa-solid fa-house"></i>
                             <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                Dashboard
+                                Tableau de bord
                             </span>
                         </a>
                     </li>

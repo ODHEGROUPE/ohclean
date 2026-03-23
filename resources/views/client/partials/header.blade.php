@@ -1,7 +1,7 @@
-<!-- Top Bar -->
+<!-- Barre supérieure -->
 <div class="hidden lg:block bg-gray-800 text-gray-400 py-2">
     <div class="container mx-auto px-4 flex justify-between items-center">
-        <span class="text-sm">Welcome to our service center! We work for you!</span>
+        <span class="text-sm">Bienvenue dans notre centre de services ! Nous travaillons pour vous !</span>
         <div class="flex space-x-4">
             <a href="#" class="text-gray-400 hover:text-sky-500 transition-colors">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
@@ -16,18 +16,18 @@
     </div>
 </div>
 
-<!-- Header -->
+<!-- En-tête -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
-    <!-- Desktop Contact Bar -->
+    <!-- Barre de contact (bureau) -->
     <div class="hidden lg:block border-b border-gray-100">
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
                 <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex-shrink-0">
-                    <img src="{{ asset('images/sky-default-229x58.png') }}" alt="Home Service" class="h-14">
+                <a href="{{ route('home') }}" class="shrink-0">
+                    <img src="{{ asset('images/logo/clean.png') }}" alt="Service à domicile" class="h-14">
                 </a>
 
-                <!-- Contact Info -->
+                <!-- Informations de contact -->
                 <div class="flex space-x-8">
                     <div class="flex items-center space-x-3">
                         <div class="text-sky-500">
@@ -37,7 +37,17 @@
                         </div>
                         <div>
                             <span class="text-xs text-gray-500 uppercase tracking-wider">Support Client</span>
-                            <p class="font-semibold text-gray-800">+229 97 00 00 00</p>
+                            <p class="font-semibold text-gray-800">
+                                <a
+                                    href="https://wa.me/2290141122828?text=Bonjour%20OhClean%2C%20je%20souhaite%20des%20informations."
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="hover:text-sky-600 transition-colors"
+                                >
+                                    +229 01 41 12 28 28
+                                </a>
+                            </p>
+
                         </div>
                     </div>
                     <div class="flex items-center space-x-3">
@@ -72,12 +82,12 @@
     <nav class="bg-gray-800" x-data="{ open: false, userMenu: false }">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-16">
-                <!-- Mobile Logo -->
+                <!-- Logo mobile -->
                 <a href="{{ route('home') }}" class="lg:hidden">
-                    <img src="{{ asset('images/logo/logo.svg') }}" alt="Home Service" class="h-10">
+                    <img src="{{ asset('images/logo/clean.png') }}" alt="Service à domicile" class="h-10">
                 </a>
 
-                <!-- Desktop Menu -->
+                <!-- Menu bureau -->
                 <div class="hidden lg:flex items-center">
                         <a href="{{ route('home') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('home') ? 'bg-sky-500' : '' }}">Accueil</a>
                         <a href="{{ route('services') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-5 px-6 {{ request()->routeIs('services') ? 'bg-sky-500' : '' }}">Services</a>
@@ -95,14 +105,14 @@
                         </a>
                 </div>
 
-                <!-- Right Side - Auth -->
+                <!-- Côté droit - Authentification -->
                 <div class="hidden lg:flex items-center space-x-4">
                     @guest
                         <a href="{{ route('login') }}" class="text-white hover:text-sky-300 transition-colors font-medium px-4 py-2">Connexion</a>
                         <a href="{{ route('register') }}" class="bg-sky-500 hover:bg-sky-600 text-white font-medium px-6 py-2 rounded-lg transition-colors">Inscription</a>
                     @else
-                        <!-- User Menu -->
-                        <div class="relative" @click.away="userMenu = false">
+                        <!-- Menu utilisateur -->
+                        <div class="relative" @click.outside="userMenu = false">
                             <button @click="userMenu = !userMenu" class="flex items-center space-x-3 text-white hover:text-sky-300 transition-colors focus:outline-none">
                                 <div class="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center">
                                     <span class="text-white font-bold">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
@@ -116,8 +126,8 @@
                                 </svg>
                             </button>
 
-                            <!-- Dropdown Menu -->
-                            <div x-show="userMenu" x-transition class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg py-2 z-50">
+                            <!-- Menu déroulant -->
+                            <div x-cloak x-show="userMenu" x-transition class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg py-2 z-50">
 
                                 <a href="{{ route('client.profile') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,7 +174,7 @@
                     @endguest
                 </div>
 
-                <!-- Mobile Menu Button -->
+                <!-- Bouton du menu mobile -->
                 <button @click="open = !open" class="lg:hidden text-white p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -173,8 +183,8 @@
                 </button>
             </div>
 
-            <!-- Mobile Menu -->
-            <div x-show="open" x-transition class="lg:hidden pb-4">
+            <!-- Menu mobile -->
+            <div x-cloak x-show="open" x-transition class="lg:hidden pb-4">
                 <div class="flex flex-col space-y-2">
                     <a href="{{ route('home') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('home') ? 'bg-sky-500' : '' }}">Accueil</a>
                     <a href="{{ route('services') }}" class="text-white hover:bg-sky-500 transition-colors font-medium py-2 px-5 {{ request()->routeIs('services') ? 'bg-sky-500' : '' }}">Services</a>

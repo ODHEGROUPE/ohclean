@@ -13,6 +13,7 @@ use App\Http\Controllers\WebhookControleur;
 use App\Http\Controllers\ForfaitController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     // Mes commandes
     Route::get('/mes-commandes', [ClientController::class, 'mesCommandes'])->name('client.commandes');
     Route::get('/mes-commandes/{commande}', [ClientController::class, 'voirCommande'])->name('client.commandes.show');
+    Route::get('/mes-commandes/{commande}/recu-paiement', [ClientController::class, 'telechargerRecuPaiement'])->name('client.commandes.recu.pdf');
     Route::get('/mes-commandes/{commande}/payer', [ClientController::class, 'payerCommande'])->name('client.commandes.payer');
 });
 
@@ -53,6 +55,7 @@ Route::post('/commander', [ClientController::class, 'storeCommande'])->name('cli
 Route::get('/paiement', [ClientController::class, 'paiementPage'])->name('client.paiement');
 Route::get('/paiement/confirmation', [ClientController::class, 'confirmationPaiement'])->name('client.paiement.confirmation');
 Route::get('/commande/{commande}/confirmation', [ClientController::class, 'confirmationCommande'])->name('client.commandes.confirmation');
+Route::get('/commande/{commande}/recu-paiement', [ClientController::class, 'telechargerRecuPaiementPublic'])->name('client.commandes.confirmation.recu.pdf');
 
 // Webhook KKiaPay (pas d'authentification - appelé par KKiaPay)
 Route::post('/webhook/kkiapay', [WebhookControleur::class, 'gererWebhookKKiaPay'])->name('webhook.kkiapay');
@@ -95,6 +98,13 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin.or.agent'])->grou
     // Gestion des abonnements côté admin (lecture seule)
     Route::get('/abonnements', [AbonnementControleur::class, 'adminIndex'])->name('admin.abonnements.index');
     Route::get('/abonnements/{abonnement}', [AbonnementControleur::class, 'adminShow'])->name('admin.abonnements.show');
+
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{notification}/ouvrir', [NotificationController::class, 'open'])->name('notifications.open');
+    Route::patch('/notifications/{notification}/lire', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::patch('/notifications/lire-tout', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
 
 // Routes Admin Only - Modification/Suppression réservées à l'administrateur

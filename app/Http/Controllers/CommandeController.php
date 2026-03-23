@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Article;
 use App\Models\Service;
 use App\Models\Commande;
+use App\Models\Notification;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -241,7 +242,26 @@ class CommandeController extends Controller
             'statut' => 'required|in:EN_COURS,PRET,LIVREE,ANNULEE',
         ]);
 
+        $ancienStatut = $commande->statut;
+
         $commande->update(['statut' => $validated['statut']]);
+
+        if ($commande->user_id && $ancienStatut !== $validated['statut']) {
+            $labels = [
+                'EN_COURS' => 'En cours',
+                'PRET' => 'Prête',
+                'LIVREE' => 'Livrée',
+                'ANNULEE' => 'Annulée',
+            ];
+
+            Notification::create([
+                'user_id' => $commande->user_id,
+                'commande_id' => $commande->id,
+                'message' => 'Votre commande ' . $commande->numSuivi . ' est maintenant : ' . ($labels[$validated['statut']] ?? $validated['statut']) . '.',
+                'type' => $validated['statut'] === 'LIVREE' ? 'success' : 'info',
+                'dateEnvoi' => now()->toDateString(),
+            ]);
+        }
 
         return redirect()
             ->back()

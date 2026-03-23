@@ -1,5 +1,5 @@
 {{-- WhatsApp Floating Bubble --}}
-@props(['phone' => '+22997000000', 'message' => 'Bonjour, je souhaite avoir des informations sur vos services de pressing.'])
+@props(['phone' => '+2290141122828', 'message' => 'Bonjour, je souhaite avoir des informations sur vos services de pressing.'])
 
 @php
     $encodedMessage = urlencode($message);

@@ -22,7 +22,7 @@
         </div>
     </div>
 </section>
-    <div class="w-full max-w-7xl mx-auto">
+    <div class="w-full max-w-7xl container px-4 mx-auto">
 
 
 

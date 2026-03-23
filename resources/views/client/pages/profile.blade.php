@@ -105,7 +105,7 @@
                                            name="telephone"
                                            value="{{ old('telephone', $user->telephone) }}"
                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
-                                           placeholder="+229 97 00 00 00">
+                                           placeholder="+229 01 41 12 28 28">
                                     @error('telephone')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
