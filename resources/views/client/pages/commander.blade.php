@@ -49,6 +49,22 @@
                 <div class="grid gap-8 lg:grid-cols-3">
                     <!-- Article Selection -->
                     <div class="space-y-6 lg:col-span-2">
+                        <div>
+                            @if($isExpress)
+                                <a href="{{ route('commander') }}"
+                                    class="flex w-full items-center justify-center rounded-xl bg-orange-500 py-4 font-semibold text-white transition-colors hover:bg-orange-600">
+                                    <i class="fa-solid fa-truck-fast mr-3"></i>
+                                    Mode Express activé (cliquez pour désactiver)
+                                </a>
+                            @else
+                                <a href="{{ route('commander') }}?express=1"
+                                    class="flex w-full items-center justify-center rounded-xl bg-sky-600 py-4 font-semibold text-white transition-colors hover:bg-sky-700">
+                                    <i class="fa-solid fa-truck-fast mr-3"></i>
+                                    Expresser la commande
+                                </a>
+                            @endif
+                        </div>
+
                         <!-- Sélection du service -->
                         <div class="rounded-2xl bg-white p-6 shadow-sm">
                             <h2 class="mb-4 flex items-center text-xl font-bold text-gray-900">
