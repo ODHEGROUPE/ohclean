@@ -1,0 +1,28 @@
+RewriteEngine On
+RewriteBase /
+
+# HTTP → HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Authorization header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Rediriger tous les assets vers /public/
+RewriteRule ^build/(.*)$ public/build/$1 [L]
+RewriteRule ^images/(.*)$ public/images/$1 [L]
+RewriteRule ^css/(.*)$ public/css/$1 [L]
+RewriteRule ^js/(.*)$ public/js/$1 [L]
+RewriteRule ^fonts/(.*)$ public/fonts/$1 [L]
+
+# Servir les fichiers statiques de /public directement
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Servir les dossiers de /public directement
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -d
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Tout le reste → Laravel front controller
+RewriteRule ^(.*)$ public/index.php [L]
