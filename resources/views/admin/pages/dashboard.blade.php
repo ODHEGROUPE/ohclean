@@ -125,16 +125,17 @@
                     </a>
                 </div>
             </div>
-            <div class="divide-y divide-gray-100">
+            <div class="overflow-x-auto">
+            <div class="divide-y divide-gray-100 min-w-[620px]">
                 @forelse($commandesRecentes as $commande)
                     <div class="p-4 hover:bg-gray-50 transition-colors">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="font-medium text-gray-800">{{ $commande->numSuivi }}</p>
-                                <p class="text-sm text-gray-500">{{ $commande->user->name ?? 'Client anonyme' }}</p>
+                                <p class="font-medium text-gray-800 whitespace-nowrap">{{ $commande->numSuivi ?? ('ID-' . $commande->id) }}</p>
+                                <p class="text-sm text-gray-500 whitespace-nowrap">{{ $commande->user->name ?? 'Client anonyme' }}</p>
                             </div>
                             <div class="text-right">
-                                <p class="font-semibold text-gray-800">{{ number_format($commande->montantTotal, 0, ',', ' ') }} XOF</p>
+                                <p class="font-semibold text-gray-800 whitespace-nowrap">{{ number_format($commande->montantTotal, 0, ',', ' ') }} XOF</p>
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                     @switch($commande->statut)
                                         @case('EN_COURS') bg-sky-100 text-sky-700 @break
@@ -143,9 +144,16 @@
                                         @case('ANNULEE') bg-red-100 text-red-700 @break
                                         @default bg-gray-100 text-gray-700
                                     @endswitch
-                                ">
+                                whitespace-nowrap">
                                     {{ str_replace('_', ' ', $commande->statut) }}
                                 </span>
+                                @if(auth()->user()->role === 'ADMIN')
+                                    <div class="mt-2">
+                                        <a href="{{ route('commandes.edit', $commande->id) }}" class="text-xs text-sky-600 hover:text-sky-700 font-medium whitespace-nowrap">
+                                            Modifier
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -154,6 +162,7 @@
                         Aucune commande récente
                     </div>
                 @endforelse
+            </div>
             </div>
         </div>
 

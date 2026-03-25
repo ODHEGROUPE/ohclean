@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Article;
 use App\Models\Commande;
+use App\Models\OdheContent;
+use App\Models\OdheTeamMember;
 use App\Models\User;
 use App\Models\Notification;
 use App\Models\LigneCommande;
@@ -28,7 +30,15 @@ class ClientController extends Controller
      */
     public function about()
     {
-        return view('client.pages.about');
+        $odheContent = OdheContent::first();
+
+        $teamMembers = OdheTeamMember::query()
+            ->where('is_active', true)
+            ->orderBy('display_order')
+            ->orderBy('id')
+            ->get();
+
+        return view('client.pages.about', compact('odheContent', 'teamMembers'));
     }
 
     /**

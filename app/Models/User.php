@@ -27,6 +27,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'adresse',
         'ville',
         'role',
+        'team_function',
+        'team_photo',
+        'show_in_team',
     ];
 
     public function getInitials(): string
@@ -86,6 +89,7 @@ public function isUser(): bool
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'show_in_team' => 'boolean',
         ];
     }
     public function commandes(): HasMany

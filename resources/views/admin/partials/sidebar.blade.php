@@ -112,6 +112,18 @@
                             </span>
                         </a>
                     </li>
+                    @if(auth()->user()->role === 'ADMIN')
+                    <li>
+                        <a href="{{ route('admin.odhe.about.edit') }}"
+                            class="menu-item group {{ request()->routeIs('admin.odhe.about.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+
+                            <i class="fa-solid fa-pen-ruler"></i>
+                            <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                ODHE / À propos
+                            </span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </div>
 

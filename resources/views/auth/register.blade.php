@@ -4,7 +4,7 @@
 
     <!-- Preloader -->
     <div x-show="loaded" x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})" class="fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white" style="display: none;">
-        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-cyan-500 border-t-transparent"></div>
     </div>
 
     <!-- Page Wrapper -->
@@ -82,7 +82,7 @@
                                             placeholder="Entrez votre mot de passe"
                                             required
                                             autocomplete="new-password"
-                                            class="shadow-sm h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                            class="shadow-sm h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
                                         >
                                         <button
                                             type="button"
@@ -111,7 +111,7 @@
                                             placeholder="Confirmez votre mot de passe"
                                             required
                                             autocomplete="new-password"
-                                            class="shadow-sm h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                            class="shadow-sm h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
                                         >
                                         <button
                                             type="button"
@@ -131,7 +131,7 @@
 
                                 <!-- Submit Button -->
                                 <div>
-                                    <button type="submit" class="w-full text-center items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                                    <button type="submit" class="w-full text-center items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-cyan-500 shadow-theme-xs hover:bg-cyan-600">
                                         {{ __('Créer mon compte') }}
                                     </button>
                                 </div>
@@ -142,30 +142,16 @@
                         <div class="mt-5">
                             <p class="text-center text-sm font-normal text-gray-700 sm:text-start">
                                 {{ __("Vous avez déjà un compte?") }}
-                                <a href="{{ route('login') }}" class="text-brand-500 hover:text-brand-600">{{ __('Se connecter') }}</a>
+                                <a href="{{ route('login') }}" class="text-cyan-500 hover:text-cyan-600">{{ __('Se connecter') }}</a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Side - Branding (Hidden on Mobile) -->
-            <div class="relative hidden h-full w-full items-center bg-gradient-to-br from-blue-950 to-blue-900 lg:grid lg:w-1/2">
-                <div class="z-1 flex items-center justify-center">
-                    <div class="flex max-w-xs flex-col items-center text-center">
-                        <div class="mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <h2 class="text-2xl font-bold text-white mb-3">Rejoignez-nous</h2>
-                        <p class="text-gray-300 text-sm">
-                            Créez votre compte pour accéder à tous nos services de pressing et gérer vos commandes facilement
-                        </p>
-                    </div>
-                </div>
+            <!-- Right Side - Image (Hidden on Mobile) -->
+            <div class="relative hidden h-full w-full items-center lg:grid lg:w-1/2 bg-cover bg-center"
+                 style="background-image: url('{{ asset('images/login_register.jpg') }}');">
             </div>
         </div>
     </div>

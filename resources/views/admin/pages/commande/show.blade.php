@@ -38,11 +38,7 @@
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Client</h3>
             @if($commande->user)
             <div class="flex items-center gap-4">
-                <div class="h-16 w-16 overflow-hidden rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                    <span class="text-gray-600 font-semibold text-lg">
-                        {{ $commande->user->getInitials() }}
-                    </span>
-                </div>
+                <x-user-avatar :user="$commande->user" size="lg" />
                 <div>
                     <p class="font-medium text-gray-800 text-lg">{{ $commande->user->name }}</p>
                     <p class="text-gray-500 text-sm">{{ $commande->user->email }}</p>
@@ -58,9 +54,7 @@
             @endif
             @else
             <div class="flex items-center gap-4">
-                <div class="h-16 w-16 overflow-hidden rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                    <span class="text-gray-400 font-semibold text-lg">?</span>
-                </div>
+                <x-user-avatar :user="null" size="lg" fallback="?" bg="bg-gray-100" text="text-gray-500" class="border-gray-200" />
                 <div>
                     <p class="font-medium text-gray-500 text-lg">Client anonyme</p>
                     <p class="text-gray-400 text-sm">Aucune information disponible</p>

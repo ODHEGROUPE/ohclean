@@ -14,6 +14,7 @@ use App\Http\Controllers\ForfaitController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OdheController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -111,6 +112,13 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin.or.agent'])->grou
 Route::prefix('admin')->middleware(['auth', 'verified', 'admin.only'])->group(function () {
     // Gestion des utilisateurs (Admin uniquement)
     Route::resource('users', UserController::class);
+
+    // ODHE - Personnalisation de la page À propos
+    Route::get('/odhe/a-propos', [OdheController::class, 'edit'])->name('admin.odhe.about.edit');
+    Route::post('/odhe/a-propos/contenu', [OdheController::class, 'updateContent'])->name('admin.odhe.about.update-content');
+    Route::post('/odhe/a-propos/equipe', [OdheController::class, 'storeTeamMember'])->name('admin.odhe.about.store-team');
+    Route::put('/odhe/a-propos/equipe/{member}', [OdheController::class, 'updateTeamMember'])->name('admin.odhe.about.update-team');
+    Route::delete('/odhe/a-propos/equipe/{member}', [OdheController::class, 'destroyTeamMember'])->name('admin.odhe.about.destroy-team');
 
     // Services - création, modification, suppression
     Route::get('/services/create', [ServiceController::class, 'create'])->name('services.create');

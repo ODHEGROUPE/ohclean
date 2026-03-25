@@ -177,13 +177,7 @@
                     <!-- Client + Avatar -->
                     <td class="py-3">
                         <div class="flex items-center gap-3">
-                            <div class="h-[50px] w-[50px] overflow-hidden rounded-md bg-sky-100 flex items-center justify-center flex-shrink-0">
-                                <span class="text-sky-600 font-semibold text-sm">
-                                    {{ $paiement->commande && $paiement->commande->user
-                                        ? strtoupper(substr($paiement->commande->user->name, 0, 2))
-                                        : 'AN' }}
-                                </span>
-                            </div>
+                            <x-user-avatar :user="$paiement->commande?->user" size="md" fallback="AN" />
                             <div>
                                 <p class="font-medium text-gray-800 text-theme-sm">
                                     {{ $paiement->commande->user->name ?? 'Client anonyme' }}

@@ -4,7 +4,7 @@
 
     <!-- Preloader -->
     <div x-show="loaded" x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})" class="fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white" style="display: none;">
-        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-sky-500 border-t-transparent"></div>
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-cyan-500 border-t-transparent"></div>
     </div>
 
     <!-- Page Wrapper -->
@@ -71,7 +71,7 @@
                                             placeholder="Entrez votre mot de passe"
                                             required
                                             autocomplete="current-password"
-                                            class="shadow-sm h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none"
+                                            class="shadow-sm h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-11 text-sm text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
                                         >
                                         <button
                                             type="button"
@@ -96,12 +96,12 @@
                                             id="remember_me"
                                             type="checkbox"
                                             name="remember"
-                                            class="rounded border-gray-300 text-sky-600 shadow-sm focus:ring-sky-500"
+                                            class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500"
                                         >
                                         <span class="ml-2 text-sm text-gray-600">{{ __('Se souvenir de moi') }}</span>
                                     </label>
                                     @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}" class="text-sm text-sky-500 hover:text-sky-600">
+                                        <a href="{{ route('password.request') }}" class="text-sm text-cyan-500 hover:text-cyan-600">
                                             {{ __('Mot de passe oublié?') }}
                                         </a>
                                     @endif
@@ -109,7 +109,7 @@
 
                                 <!-- Submit Button -->
                                 <div>
-                                    <button type="submit" class="w-full text-center items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-sky-500 shadow-theme-xs hover:bg-sky-600">
+                                    <button type="submit" class="w-full text-center items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-cyan-500 shadow-theme-xs hover:bg-cyan-600">
                                         {{ __('Se connecter') }}
                                     </button>
                                 </div>
@@ -120,30 +120,16 @@
                         <div class="mt-5">
                             <p class="text-center text-sm font-normal text-gray-700 sm:text-start">
                                 {{ __("Vous n'avez pas de compte?") }}
-                                <a href="{{ route('register') }}" class="text-sky-500 hover:text-sky-600">{{ __('Créer un compte') }}</a>
+                                <a href="{{ route('register') }}" class="text-cyan-500 hover:text-cyan-600">{{ __('Créer un compte') }}</a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Side - skying (Hidden on Mobile) -->
-            <div class="relative hidden h-full w-full items-center bg-gradient-to-br from-sky-950 to-sky-900 lg:grid lg:w-1/2">
-                <div class="z-1 flex items-center justify-center">
-                    <div class="flex max-w-xs flex-col items-center text-center">
-                        <div class="mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <h2 class="text-2xl font-bold text-white mb-3">Bienvenue</h2>
-                        <p class="text-gray-300 text-sm">
-                            Connectez-vous à votre compte pour accéder au tableau de bord et gérer vos commandes
-                        </p>
-                    </div>
-                </div>
+            <!-- Right Side - Image (Hidden on Mobile) -->
+            <div class="relative hidden h-full w-full items-center lg:grid lg:w-1/2 bg-cover bg-center"
+                 style="background-image: url('{{ asset('images/login_register.jpg') }}');">
             </div>
         </div>
     </div>

@@ -8,9 +8,9 @@
         <div class="absolute inset-0 bg-black/30"></div>
         <div class="container relative z-10 mx-auto px-4">
             <div class="text-center text-white">
-                <h1 class="mb-4 text-4xl font-bold md:text-5xl">À Propos de Nous</h1>
+                <h1 class="mb-4 text-4xl font-bold md:text-5xl">{{ $odheContent->hero_title ?? 'À Propos de Nous' }}</h1>
                 <p class="mx-auto max-w-2xl text-xl text-sky-100">
-                    Découvrez notre histoire et notre engagement envers l'excellence du pressing
+                    {{ $odheContent->hero_subtitle ?? "Découvrez notre histoire et notre engagement envers l'excellence du pressing" }}
                 </p>
                 <nav class="mt-6">
                     <ol class="flex items-center justify-center space-x-2 text-sm">
@@ -29,7 +29,7 @@
             <div class="grid items-center gap-12 lg:grid-cols-2">
                 <div class="relative">
                     <div class="relative rounded-2xl p-8">
-                        <img src="https://i.pinimg.com/736x/2d/0d/99/2d0d99b0c61c18b30c5b1ed105f5d3c3.jpg" alt="Notre équipe"
+                        <img src="{{ $odheContent?->story_image ? asset('storage/' . $odheContent->story_image) : 'https://i.pinimg.com/736x/2d/0d/99/2d0d99b0c61c18b30c5b1ed105f5d3c3.jpg' }}" alt="Notre équipe"
                             class="h-80 w-full rounded-xl object-cover">
                         <div class="absolute -bottom-4 -right-4 rounded-xl bg-sky-500 p-4 text-white shadow-lg">
                             <div class="text-2xl font-bold">100%</div>
@@ -38,19 +38,15 @@
                     </div>
                 </div>
                 <div>
-                    <span class="text-sm font-semibold uppercase tracking-wider text-sky-500">Notre Histoire</span>
+                    <span class="text-sm font-semibold uppercase tracking-wider text-sky-500">{{ $odheContent->story_badge ?? 'Notre Histoire' }}</span>
                     <h2 class="mb-6 mt-2 text-3xl font-bold text-gray-900 md:text-4xl">
-                        Votre Pressing de Confiance depuis 2020
+                        {{ $odheContent->story_title ?? 'Votre Pressing de Confiance depuis 2020' }}
                     </h2>
                     <p class="mb-4 leading-relaxed text-gray-600">
-                        Fondé en 2020 à Cotonou, notre pressing est né d'une passion pour le textile et d'un désir profond
-                        de révolutionner les services de nettoyage au Bénin. Nous avons commencé avec une petite équipe
-                        dévouée et un rêve : offrir un service de pressing de qualité supérieure accessible à tous.
+                        {{ $odheContent->story_text_1 ?? "Fondé en 2020 à Cotonou, notre pressing est né d'une passion pour le textile et d'un désir profond de révolutionner les services de nettoyage au Bénin." }}
                     </p>
                     <p class="mb-6 leading-relaxed text-gray-600">
-                        Aujourd'hui, nous sommes fiers d'être l'un des pressings les plus appréciés de la région,
-                        servant des centaines de clients satisfaits chaque mois. Notre croissance témoigne de notre
-                        engagement envers l'excellence et la satisfaction client.
+                        {{ $odheContent->story_text_2 ?? "Aujourd'hui, nous sommes fiers d'être l'un des pressings les plus appréciés de la région, servant des centaines de clients satisfaits chaque mois." }}
                     </p>
                     <div class="mt-8 grid grid-cols-3 gap-4">
                         <div class="text-center">
@@ -78,11 +74,10 @@
                 <!-- TEXTE GAUCHE -->
                 <div class="space-y-6">
                     <h1 class="text-4xl font-extrabold leading-tight text-slate-900 md:text-5xl">
-                        Rencontrez Notre Équipe
+                        {{ $odheContent->team_title ?? 'Rencontrez Notre Équipe' }}
                     </h1>
-                                        <p class="max-w-xl text-lg text-slate-600">
-                        Des professionnels passionnés et expérimentés au service de votre satisfaction.
-
+                    <p class="max-w-xl text-lg text-slate-600">
+                        {{ $odheContent->team_subtitle ?? 'Des professionnels passionnés et expérimentés au service de votre satisfaction.' }}
                     </p>
                 </div>
 
@@ -90,98 +85,36 @@
                 <div class="relative">
                     <div class="swiper experts-swiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <article class="flex h-full flex-col gap-6 rounded-2xl bg-white p-8 m-4 shadow-md transition-shadow hover:shadow-lg">
-                                    <div class="flex flex-col items-center text-center gap-4">
-                                        <img src="https://i.pravatar.cc/200?img=12" alt="Jean Dupont" class="h-24 w-24 rounded-full object-cover">
-                                        <div>
-                                            <h3 class="text-xl font-bold text-slate-900">Jean Dupont</h3>
-                                            <p class="font-semibold text-sky-600">Responsable Qualité</p>
+                            @forelse($teamMembers as $member)
+                                <div class="swiper-slide">
+                                    <article class="m-4 flex h-full flex-col gap-6 rounded-2xl bg-white p-8 shadow-md transition-shadow hover:shadow-lg">
+                                        <div class="flex flex-col items-center gap-4 text-center">
+                                            @if($member->photo)
+                                                <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->name }}" class="h-24 w-24 rounded-full object-cover">
+                                            @else
+                                                @php
+                                                    $parts = explode(' ', trim($member->name));
+                                                    $initials = strtoupper(substr($parts[0] ?? '', 0, 1) . substr($parts[1] ?? '', 0, 1));
+                                                @endphp
+                                                <div class="h-24 w-24 rounded-full bg-sky-100 text-sky-700 border border-sky-200 flex items-center justify-center">
+                                                    <span class="text-3xl font-semibold">{{ $initials ?: '??' }}</span>
+                                                </div>
+                                            @endif
+                                            <div>
+                                                <h3 class="text-xl font-bold text-slate-900">{{ $member->name }}</h3>
+                                                <p class="font-semibold text-sky-600">{{ $member->function ?: 'Membre ODHE' }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="flex justify-center gap-3 pt-4 border-t border-gray-200">
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Facebook">
-                                            <i class="fab fa-facebook text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="LinkedIn">
-                                            <i class="fab fa-linkedin text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Twitter">
-                                            <i class="fab fa-twitter text-lg"></i>
-                                        </a>
-                                    </div>
-                                </article>
-                            </div>
-
-                            <div class="swiper-slide">
-                                <article class="flex h-full flex-col gap-6 rounded-2xl bg-white p-8 m-4 shadow-md transition-shadow hover:shadow-lg">
-                                    <div class="flex flex-col items-center text-center gap-4">
-                                        <img src="https://i.pravatar.cc/200?img=32" alt="Marie Adjovi" class="h-24 w-24 rounded-full object-cover">
-                                        <div>
-                                            <h3 class="text-xl font-bold text-slate-900">Marie Adjovi</h3>
-                                            <p class="font-semibold text-sky-600">Directeur Technique</p>
-
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-center gap-3 pt-4 border-t border-gray-200">
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Facebook">
-                                            <i class="fab fa-facebook text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="LinkedIn">
-                                            <i class="fab fa-linkedin text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Twitter">
-                                            <i class="fab fa-twitter text-lg"></i>
-                                        </a>
-                                    </div>
-                                </article>
-                            </div>
-
-                            <div class="swiper-slide">
-                                <article class="flex h-full flex-col gap-6 rounded-2xl bg-white p-8 m-4 shadow-md transition-shadow hover:shadow-lg">
-                                    <div class="flex flex-col items-center text-center gap-4">
-                                        <img src="https://i.pravatar.cc/200?img=56" alt="Pierre Kossou" class="h-24 w-24 rounded-full object-cover">
-                                        <div>
-                                            <h3 class="text-xl font-bold text-slate-900">Pierre Kossou</h3>
-                                            <p class="font-semibold text-sky-600">Chef Opérations</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-center gap-3 pt-4 border-t border-gray-200">
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Facebook">
-                                            <i class="fab fa-facebook text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="LinkedIn">
-                                            <i class="fab fa-linkedin text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Twitter">
-                                            <i class="fab fa-twitter text-lg"></i>
-                                        </a>
-                                    </div>
-                                </article>
-                            </div>
-
-                            <div class="swiper-slide">
-                                <article class="flex h-full flex-col gap-6 rounded-2xl bg-white p-8 m-4 shadow-md transition-shadow hover:shadow-lg">
-                                    <div class="flex flex-col items-center text-center gap-4">
-                                        <img src="https://i.pravatar.cc/200?img=45" alt="Laure Mensah" class="h-24 w-24 rounded-full object-cover">
-                                        <div>
-                                            <h3 class="text-xl font-bold text-slate-900">Laure Mensah</h3>
-                                            <p class="font-semibold text-sky-600">Service Client</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-center gap-3 pt-4 border-t border-gray-200">
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Facebook">
-                                            <i class="fab fa-facebook text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="LinkedIn">
-                                            <i class="fab fa-linkedin text-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-sky-600 hover:text-sky-700 transition" aria-label="Twitter">
-                                            <i class="fab fa-twitter text-lg"></i>
-                                        </a>
-                                    </div>
-                                </article>
-                            </div>
+                                        <div class="border-t border-gray-200 pt-4"></div>
+                                    </article>
+                                </div>
+                            @empty
+                                <div class="swiper-slide">
+                                    <article class="m-4 rounded-2xl bg-white p-8 text-center shadow-md">
+                                        <p class="font-medium text-slate-700">Aucun membre d'équipe à afficher.</p>
+                                    </article>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 

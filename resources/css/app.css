@@ -989,3 +989,34 @@ layer(base);
   opacity: 0.8;
   cursor: grabbing; /* Changes the cursor to indicate dragging */
 }
+
+/*
+  Tableaux: éviter la compression du texte et forcer le scroll horizontal
+  sur toutes les pages qui utilisent un wrapper .overflow-x-auto.
+*/
+.overflow-x-auto > table,
+.overflow-x-auto table {
+  width: max-content;
+  min-width: 100%;
+  table-layout: auto;
+}
+
+.overflow-x-auto table th,
+.overflow-x-auto table td {
+  white-space: nowrap;
+}
+
+/* Espacement supplémentaire des cellules pour améliorer la lisibilité sur mobile */
+.overflow-x-auto table th,
+.overflow-x-auto table td {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .overflow-x-auto table th,
+  .overflow-x-auto table td {
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+  }
+}

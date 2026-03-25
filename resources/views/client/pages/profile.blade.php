@@ -27,9 +27,7 @@
                 <!-- Sidebar - Infos rapides -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-2xl shadow-sm p-6 text-center">
-                        <div class="w-24 h-24 bg-gradient-to-r from-sky-500 to-sky-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-3xl font-bold text-white">{{ $user->getInitials() }}</span>
-                        </div>
+                        <x-user-avatar :user="$user" size="xl" class="mx-auto mb-4" />
                         <h2 class="text-xl font-bold text-gray-900">{{ $user->name }}</h2>
                         <p class="text-gray-500 text-sm">{{ $user->email }}</p>
 

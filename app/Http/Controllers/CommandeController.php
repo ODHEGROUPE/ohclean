@@ -161,14 +161,18 @@ class CommandeController extends Controller
     public function update(Request $request, Commande $commande): RedirectResponse
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
             'dateLivraison' => 'nullable|date',
+            'date_recuperation' => 'nullable|date',
+            'lieu_recuperation' => 'nullable|string|max:255',
+            'heure_livraison' => 'nullable|string|max:20',
+            'adresse_livraison' => 'nullable|string|max:255',
+            'instructions' => 'nullable|string',
             'statut' => 'required|in:EN_COURS,PRET,LIVREE,ANNULEE',
             'lignes' => 'required|array|min:1',
             'lignes.*.article_id' => 'required|exists:articles,id',
             'lignes.*.quantite' => 'required|integer|min:1',
         ], [
-            'user_id.required' => 'Le client est obligatoire',
             'statut.required' => 'Le statut est obligatoire',
             'lignes.required' => 'Veuillez ajouter au moins un article',
         ]);
@@ -183,8 +187,13 @@ class CommandeController extends Controller
 
             // Mettre à jour la commande
             $commande->update([
-                'user_id' => $validated['user_id'],
+                'user_id' => $validated['user_id'] ?? null,
                 'dateLivraison' => $validated['dateLivraison'],
+                'date_recuperation' => $validated['date_recuperation'] ?? null,
+                'lieu_recuperation' => $validated['lieu_recuperation'] ?? null,
+                'heure_livraison' => $validated['heure_livraison'] ?? null,
+                'adresse_livraison' => $validated['adresse_livraison'] ?? null,
+                'instructions' => $validated['instructions'] ?? null,
                 'statut' => $validated['statut'],
                 'montantTotal' => $montantTotal,
             ]);

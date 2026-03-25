@@ -5,7 +5,7 @@
 
 <div class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8" x-data="commandeForm()">
     <h2 class="mb-6 text-2xl font-semibold text-gray-800">
-        Modifier la commande #{{ $commande->numSuivi }}
+        Modifier la commande #{{ $commande->numSuivi ?? ('ID-' . $commande->id) }}
     </h2>
 
     <form method="POST" action="{{ route('commandes.update', $commande) }}">
@@ -15,12 +15,11 @@
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
             <!-- Client -->
             <div>
-                <x-input-label for="user_id" :value="__('Client')" />
+                <x-input-label for="user_id" :value="__('Client (optionnel)')" />
                 <select
                     id="user_id"
                     name="user_id"
                     class="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
-                    required
                 >
                     <option value="">Sélectionner un client</option>
                     @foreach($users as $user)
@@ -37,6 +36,7 @@
                 <x-input-label for="service_id" :value="__('Service')" />
                 <select
                     id="service_id"
+                    name="service_id"
                     x-model="selectedServiceId"
                     @change="onServiceChange()"
                     class="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
@@ -58,7 +58,7 @@
                     class="mt-1 block w-full"
                     type="date"
                     name="dateLivraison"
-                    :value="old('dateLivraison', $commande->dateLivraison)"
+                    :value="old('dateLivraison', $commande->dateLivraison ? \Carbon\Carbon::parse($commande->dateLivraison)->format('Y-m-d') : '')"
                 />
                 <x-input-error :messages="$errors->get('dateLivraison')" class="mt-2" />
             </div>
@@ -78,6 +78,71 @@
                     <option value="ANNULEE" {{ old('statut', $commande->statut) === 'ANNULEE' ? 'selected' : '' }}>Annulée</option>
                 </select>
                 <x-input-error :messages="$errors->get('statut')" class="mt-2" />
+            </div>
+        </div>
+
+        <!-- Informations logistiques -->
+        <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div>
+                <x-input-label for="date_recuperation" :value="__('Date de récupération')" />
+                <x-text-input
+                    id="date_recuperation"
+                    class="mt-1 block w-full"
+                    type="date"
+                    name="date_recuperation"
+                    :value="old('date_recuperation', $commande->date_recuperation ? \Carbon\Carbon::parse($commande->date_recuperation)->format('Y-m-d') : '')"
+                />
+                <x-input-error :messages="$errors->get('date_recuperation')" class="mt-2" />
+            </div>
+
+            <div>
+                <x-input-label for="heure_livraison" :value="__('Heure de livraison')" />
+                <x-text-input
+                    id="heure_livraison"
+                    class="mt-1 block w-full"
+                    type="time"
+                    name="heure_livraison"
+                    :value="old('heure_livraison', $commande->heure_livraison ? substr($commande->heure_livraison, 0, 5) : '')"
+                />
+                <x-input-error :messages="$errors->get('heure_livraison')" class="mt-2" />
+            </div>
+
+            <div class="lg:col-span-2">
+                <x-input-label for="lieu_recuperation" :value="__('Lieu de récupération')" />
+                <x-text-input
+                    id="lieu_recuperation"
+                    class="mt-1 block w-full"
+                    type="text"
+                    name="lieu_recuperation"
+                    :value="old('lieu_recuperation', $commande->lieu_recuperation)"
+                    placeholder="Ex: Cotonou, quartier X"
+                />
+                <x-input-error :messages="$errors->get('lieu_recuperation')" class="mt-2" />
+            </div>
+
+            <div class="lg:col-span-2">
+                <x-input-label for="adresse_livraison" :value="__('Adresse de livraison')" />
+                <x-text-input
+                    id="adresse_livraison"
+                    class="mt-1 block w-full"
+                    type="text"
+                    name="adresse_livraison"
+                    :value="old('adresse_livraison', $commande->adresse_livraison)"
+                    placeholder="Ex: Rue 123, Cotonou"
+                />
+                <x-input-error :messages="$errors->get('adresse_livraison')" class="mt-2" />
+            </div>
+
+            <div class="lg:col-span-2">
+                <x-input-label for="instructions" :value="__('Instructions')" />
+                <textarea
+                    id="instructions"
+                    name="instructions"
+                    rows="3"
+                    class="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
+                    placeholder="Instructions particulières..."
+                >{{ old('instructions', $commande->instructions) }}</textarea>
+                <x-input-error :messages="$errors->get('instructions')" class="mt-2" />
             </div>
         </div>
 
@@ -111,7 +176,7 @@
             </div>
 
             <div class="space-y-4" id="lignes-container" x-show="selectedServiceId">
-                <template x-for="(item, index) in lignes" :key="index">
+                <template x-for="(item, index) in lignes" :key="index + '-' + (item.article_id || 'none')">
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                             <!-- Article -->
@@ -125,10 +190,23 @@
                                     required
                                 >
                                     <option value="">Sélectionner un article</option>
+                                    <template x-if="item.article_id && !availableArticles.some(a => String(a.id) === String(item.article_id))">
+                                        <option :value="String(item.article_id)" :selected="true" x-text="getFallbackArticleLabel(item)"></option>
+                                    </template>
                                     <template x-for="article in availableArticles" :key="article.id">
-                                        <option :value="article.id" x-text="article.nom + ' - ' + formatPrice(article.prix)"></option>
+                                        <option
+                                            :value="String(article.id)"
+                                            :selected="String(item.article_id) === String(article.id)"
+                                            x-text="article.nom + ' - ' + formatPrice(article.prix)"
+                                        ></option>
                                     </template>
                                 </select>
+                                <p
+                                    class="mt-1 text-xs text-amber-600"
+                                    x-show="!item.article_id && Number(item.prix || 0) > 0"
+                                >
+                                    Article d'origine introuvable. Veuillez en sélectionner un.
+                                </p>
                             </div>
 
                             <!-- Quantité -->
@@ -199,20 +277,47 @@
 function commandeForm() {
     // Services avec leurs articles
     const servicesData = @json($services);
+    const allArticles = servicesData.flatMap(service =>
+        (service.articles || []).map(article => ({
+            ...article,
+            service_id: service.id,
+            service_nom: service.nom,
+        }))
+    );
     const existingLines = @json($commande->ligneCommandes);
+    const oldServiceId = @json(old('service_id'));
+    const oldLignes = @json(old('lignes', []));
+
+    // Lignes initiales : priorité aux anciennes saisies en cas d'erreur de validation
+    const hasOldLignes = Array.isArray(oldLignes) && oldLignes.length > 0;
+    const sourceLines = hasOldLignes ? oldLignes : existingLines;
+
+    // IDs des articles déjà présents (pour autoriser l'affichage même si inactifs)
+    const existingArticleIds = sourceLines
+        .map(line => {
+            const id = line.article_id ?? line.article?.id ?? null;
+            return id ? String(id) : null;
+        })
+        .filter(Boolean);
 
     // Déterminer le service initial basé sur les articles existants
     let initialServiceId = '';
-    if (existingLines.length > 0 && existingLines[0].article && existingLines[0].article.service_id) {
-        initialServiceId = String(existingLines[0].article.service_id);
+    if (oldServiceId) {
+        initialServiceId = String(oldServiceId);
+    } else if (sourceLines.length > 0) {
+        const firstLine = sourceLines[0];
+        const firstServiceId = firstLine.article?.service_id ?? null;
+        if (firstServiceId) {
+            initialServiceId = String(firstServiceId);
+        }
     }
 
     // Préparer les lignes existantes
-    const initialLignes = existingLines.map(line => {
+    const initialLignes = sourceLines.map(line => {
         return {
-            article_id: line.article_id ? String(line.article_id) : '',
-            quantite: line.quantite,
-            prix: parseFloat(line.prix)
+            article_id: (line.article_id ?? line.article?.id) ? String(line.article_id ?? line.article?.id) : '',
+            quantite: Number(line.quantite ?? 1),
+            prix: parseFloat(line.prix ?? 0)
         };
     });
 
@@ -223,12 +328,75 @@ function commandeForm() {
         lignes: initialLignes.length > 0 ? initialLignes : [{ article_id: '', quantite: 1, prix: 0 }],
         total: 0,
 
+        getArticlesForService(serviceId) {
+            if (!serviceId) return [];
+
+            const service = this.services.find(s => s.id == serviceId);
+            const serviceArticleIds = service && Array.isArray(service.articles)
+                ? service.articles.map(article => String(article.id))
+                : [];
+
+            // En édition, on garde visibles les articles déjà présents dans la commande,
+            // même s'ils n'appartiennent pas au service sélectionné ou sont inactifs.
+            return allArticles.filter(article => {
+                const articleId = String(article.id);
+                const isInSelectedService = serviceArticleIds.includes(articleId);
+                const isExistingInOrder = existingArticleIds.includes(articleId);
+
+                if (isExistingInOrder) {
+                    return true;
+                }
+
+                // En édition, on laisse les articles du service visibles même s'ils sont inactifs
+                // pour faciliter le pré-remplissage et la correction des anciennes commandes.
+                return isInSelectedService;
+            });
+        },
+
         init() {
             // Charger les articles du service initial
             if (this.selectedServiceId) {
-                const service = this.services.find(s => s.id == this.selectedServiceId);
-                this.availableArticles = service ? service.articles.filter(a => a.actif) : [];
+                this.availableArticles = this.getArticlesForService(this.selectedServiceId);
+
+                // Pour les anciennes lignes sans article_id, tenter une correspondance par prix.
+                this.lignes = this.lignes.map((item) => {
+                    if (item.article_id) {
+                        return item;
+                    }
+
+                    const targetPrix = Number(item.prix || 0);
+                    if (!targetPrix) {
+                        return item;
+                    }
+
+                    const candidats = this.availableArticles.filter(a => Math.abs(Number(a.prix) - targetPrix) < 0.01);
+                    if (candidats.length >= 1) {
+                        return {
+                            ...item,
+                            article_id: String(candidats[0].id),
+                            prix: parseFloat(candidats[0].prix),
+                        };
+                    }
+
+                    return item;
+                });
+
+                // Recalculer les prix à partir des articles disponibles
+                this.lignes = this.lignes.map((item) => {
+                    const article = this.availableArticles.find(a => String(a.id) === String(item.article_id));
+                    return {
+                        ...item,
+                        prix: article ? parseFloat(article.prix) : parseFloat(item.prix || 0)
+                    };
+                });
             }
+
+            // Normaliser en chaîne pour aligner x-model et les valeurs des <option>
+            this.lignes = this.lignes.map((item) => ({
+                ...item,
+                article_id: item.article_id ? String(item.article_id) : '',
+            }));
+
             this.updateTotal();
         },
 
@@ -241,8 +409,7 @@ function commandeForm() {
                 return;
             }
 
-            const service = this.services.find(s => s.id == this.selectedServiceId);
-            this.availableArticles = service ? service.articles.filter(a => a.actif) : [];
+            this.availableArticles = this.getArticlesForService(this.selectedServiceId);
 
             // Réinitialiser les lignes quand on change de service
             this.lignes = [{ article_id: '', quantite: 1, prix: 0 }];
@@ -273,9 +440,18 @@ function commandeForm() {
                 return;
             }
 
-            const article = this.availableArticles.find(a => a.id == articleId);
+            const article = this.availableArticles.find(a => String(a.id) === String(articleId));
             this.lignes[index].prix = article ? parseFloat(article.prix) : 0;
             this.updateTotal();
+        },
+
+        getFallbackArticleLabel(item) {
+            const fromAll = allArticles.find(a => String(a.id) === String(item.article_id));
+            if (fromAll) {
+                return `${fromAll.nom} - ${this.formatPrice(fromAll.prix)}`;
+            }
+
+            return `Article #${item.article_id} (indisponible) - ${this.formatPrice(item.prix || 0)}`;
         },
 
         updateTotal() {

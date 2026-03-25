@@ -182,11 +182,7 @@
                     <!-- Client -->
                     <td class="py-3">
                         <div class="flex items-center gap-3">
-                            <div class="h-[40px] w-[40px] overflow-hidden rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                <span class="text-gray-600 font-semibold text-xs">
-                                    {{ $commande->user ? $commande->user->getInitials() : '??' }}
-                                </span>
-                            </div>
+                            <x-user-avatar :user="$commande->user" size="sm" fallback="??" />
                             <div>
                                 <p class="font-medium text-gray-800 text-theme-sm">
                                     {{ $commande->user ? $commande->user->name : 'Client invité' }}

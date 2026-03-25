@@ -157,11 +157,7 @@
                     <!-- Nom + Avatar -->
                     <td class="py-3">
                         <div class="flex items-center gap-3">
-                            <div class="h-[50px] w-[50px] overflow-hidden rounded-md bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                <span class="text-gray-600 font-semibold text-sm">
-                                    {{ $user->getInitials() }}
-                                </span>
-                            </div>
+                            <x-user-avatar :user="$user" size="md" />
                             <p class="font-medium text-gray-800 text-theme-sm">
                                 {{ $user->name }}
                             </p>

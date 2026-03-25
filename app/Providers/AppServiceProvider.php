@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Commande;
 use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -27,6 +29,15 @@ class AppServiceProvider extends ServiceProvider
     {
         App::setLocale(config('app.locale', 'fr'));
         Carbon::setLocale(App::currentLocale());
+
+        // Accepter indifféremment l'ID ou le numéro de suivi dans les URLs de commande.
+        // Cela permet notamment d'ouvrir/modifier des commandes historiques sans référence.
+        Route::bind('commande', function (string $value) {
+            return Commande::query()
+                ->whereKey($value)
+                ->orWhere('numSuivi', $value)
+                ->firstOrFail();
+        });
 
         View::composer('admin.partials.header', function ($view) {
             $user = Auth::user();
